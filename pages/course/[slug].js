@@ -4,7 +4,12 @@ import {Box, Image} from '@chakra-ui/react'
 import {useState} from "react";
 
 
-export default function CoursePage({gradeGroup}) {
+export default function CoursePage({gradeGroup,courseName}) {
+
+    const setOfLevel = new Set();
+    Object.values(gradeGroup).flat().flat().map((it)=>{
+        setOfLevel.add(it.levelTitle)
+    })
 
     const [accordionState, setAccordionState] = useState({});
 
@@ -18,7 +23,13 @@ export default function CoursePage({gradeGroup}) {
 
     return (
         <>
-            <Accordion align={"start"}>
+            <div >
+                <div style={{ marginLeft: '10px', display: 'inline-block' }}>
+                    <h2>{courseName}</h2>
+                </div>
+                <div style={{ marginLeft: '5px', display: 'inline-block' }}>({setOfLevel.size})</div>
+            </div>
+            <Box marginTop={60}><Accordion align={"start"}>
                 {Object.entries(gradeGroup).map(([key, value], index) => (
                     <Accordion.Item key={key}
                                     isExpanded={accordionState[index] == null ? true : accordionState[index]}
@@ -26,15 +37,16 @@ export default function CoursePage({gradeGroup}) {
                                     onCollapse={handleCollapse(index)}
                                     title={
                                         <Box marginTop={30}>
-                                            <h3 style={{
+                                            <div style={{
                                                 display: 'inline',
-                                                fontSize: '1.2em',
+                                                fontSize: '1.3em',
                                                 marginRight: '10px'
-                                            }}>{key}</h3>
-                                            <h4 style={{
+                                            }}>{key}</div>
+                                            <div style={{
                                                 display: 'inline',
                                                 fontSize: '0.8em'
-                                            }}>{value.length} Levels</h4>
+                                            }}>{value.length} Levels
+                                            </div>
                                         </Box>
                                     }>
                         <div key={key}>
@@ -66,7 +78,7 @@ export default function CoursePage({gradeGroup}) {
                         </div>
                     </Accordion.Item>
                 ))}
-            </Accordion>
+            </Accordion></Box>
         </>
     )
 }
@@ -119,7 +131,8 @@ export async function getServerSideProps(context) {
     return (
         {
             props: {
-                gradeGroup
+                gradeGroup,
+                courseName:course.items[0].fields.name
             }
         }
     )
