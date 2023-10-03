@@ -32,7 +32,7 @@ export default function CoursePage({gradeGroup,courseName}) {
             <Box marginTop={60}><Accordion align={"start"}>
                 {Object.entries(gradeGroup).map(([key, value], index) => (
                     <Accordion.Item key={key}
-                                    isExpanded={accordionState[index] == null ? true : accordionState[index]}
+                                    isExpanded={accordionState[index] == null ? false : accordionState[index]}
                                     onExpand={handleExpand(index)}
                                     onCollapse={handleCollapse(index)}
                                     title={
