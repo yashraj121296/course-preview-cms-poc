@@ -1,38 +1,74 @@
 import * as contentful from "../../utils/contentful"
 import {Accordion} from '@contentful/f36-components';
 import {Box, Image} from '@chakra-ui/react'
+import {useState} from "react";
 
 
 export default function CoursePage({gradeGroup}) {
+
+    const [accordionState, setAccordionState] = useState({});
+
+    const handleExpand = (itemIndex) => () => {
+        setAccordionState((state) => ({...state, [itemIndex]: true}));
+    };
+
+    const handleCollapse = (itemIndex) => () => {
+        setAccordionState((state) => ({...state, [itemIndex]: false}));
+    };
     console.log(gradeGroup)
     return (
         <>
-            <div>name of the course is <h3></h3></div>
-            {Object.entries(gradeGroup).map(([key, value]) => (
-                <div key={key}>
-                    <Accordion align={"start"}>
-                        <h3>{key}</h3>
-                        {value.map((activitiesData) => (
-                                <Accordion.Item key={activitiesData} title={activitiesData[0].levelTitle}>
-                                    {activitiesData.map((data)=> (
-                                        <Box display={'inline-block'} key={data} maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden'
-                                        >
-                                            <Image
-                                                src={data.imageURL}
-                                                alt={'Image Not Found'}/>
-                                            <Box  mt='1' fontWeight='semibold' as='h4' lineHeight='tight' noOfLines={1}>
-                                                {data.activityTitle}
-                                            </Box>
-                                        </Box>
-                                    ) )
-                                    }
-                                </Accordion.Item>
-                            )
-                        )}
-                    </Accordion>
-                </div>
 
-            ))}
+
+            <Accordion align={"start"}>
+                {Object.entries(gradeGroup).map(([key, value], index) => (
+                    <Accordion.Item key={key}
+                                    isExpanded={accordionState[index] == null ? true : accordionState[index]}
+                                    onExpand={handleExpand(index)}
+                                    onCollapse={handleCollapse(index)}
+                                    title={
+                                        <Box marginTop={30}>
+                                            <h3 style={{
+                                                display: 'inline',
+                                                fontSize: '1.2em',
+                                                marginRight: '10px'
+                                            }}>{key}</h3>
+                                            <h4 style={{
+                                                display: 'inline',
+                                                fontSize: '0.8em'
+                                            }}>{value.length} Levels</h4>
+                                        </Box>
+                                    }>
+                        <div key={key}>
+                            <Box marginTop={10}>
+                                <Accordion align={"start"}>
+                                    {value.map((activitiesData) => (
+
+                                            <Accordion.Item key={activitiesData} title={activitiesData[0].levelTitle}>
+                                                {activitiesData.map((data) => (
+                                                    <Box display={'inline-block'} key={data} maxW='sm' borderWidth='1px'
+                                                         borderRadius='lg' overflow='hidden'
+                                                    >
+                                                        <Image
+                                                            src={data.imageURL}
+                                                            alt={'Image Not Found'}/>
+                                                        <Box mt='1' fontWeight='semibold' as='h4' lineHeight='tight'
+                                                             noOfLines={1}>
+                                                            {data.activityTitle}
+                                                        </Box>
+                                                    </Box>
+                                                ))
+                                                }
+                                            </Accordion.Item>
+                                        )
+                                    )}
+                                </Accordion>
+                            </Box>
+                        </div>
+                    </Accordion.Item>
+                ))}
+            </Accordion>
+
         </>
     )
 }
