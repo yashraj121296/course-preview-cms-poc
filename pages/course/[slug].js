@@ -15,11 +15,9 @@ export default function CoursePage({gradeGroup}) {
     const handleCollapse = (itemIndex) => () => {
         setAccordionState((state) => ({...state, [itemIndex]: false}));
     };
-    console.log(gradeGroup)
+
     return (
         <>
-
-
             <Accordion align={"start"}>
                 {Object.entries(gradeGroup).map(([key, value], index) => (
                     <Accordion.Item key={key}
@@ -43,17 +41,18 @@ export default function CoursePage({gradeGroup}) {
                             <Box marginTop={10}>
                                 <Accordion align={"start"}>
                                     {value.map((activitiesData) => (
-
                                             <Accordion.Item key={activitiesData} title={activitiesData[0].levelTitle}>
                                                 {activitiesData.map((data) => (
                                                     <Box display={'inline-block'} key={data} maxW='sm' borderWidth='1px'
-                                                         borderRadius='lg' overflow='hidden'
+                                                         borderRadius='lg' overflow='hidden' margin='0 20px' _hover={{
+                                                        border: "1px solid blue", // Border style on hover
+                                                    }}
                                                     >
                                                         <Image
                                                             src={data.imageURL}
                                                             alt={'Image Not Found'}/>
                                                         <Box mt='1' fontWeight='semibold' as='h4' lineHeight='tight'
-                                                             noOfLines={1}>
+                                                        >
                                                             {data.activityTitle}
                                                         </Box>
                                                     </Box>
@@ -68,7 +67,6 @@ export default function CoursePage({gradeGroup}) {
                     </Accordion.Item>
                 ))}
             </Accordion>
-
         </>
     )
 }
