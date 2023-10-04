@@ -1,10 +1,7 @@
 import * as contentful from "../../utils/contentful"
 
-
 export default async function handler(req, res) {
-    const { secret, code } = req.query
-    console.log("course code: ", code)
-    console.log("secret: ", secret)
+    const { code } = req.query
 
     if (!code) {
         return res.status(401).json({ message: 'Invalid token' })
