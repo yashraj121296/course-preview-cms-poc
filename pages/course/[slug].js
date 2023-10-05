@@ -7,6 +7,7 @@ import {useState} from "react";
 export default function CoursePage({gradeGroup,courseName}) {
 
     const setOfLevel = new Set();
+
     Object.values(gradeGroup).flat().flat().map((it)=>{
         setOfLevel.add(it.levelTitle)
     })
