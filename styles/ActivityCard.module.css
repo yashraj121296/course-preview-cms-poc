@@ -1,0 +1,44 @@
+.activity__card{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 1 0%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    border: 1px solid rgb(236, 237, 239);
+    height: 260px;
+    padding-bottom: 16px;
+    cursor: pointer;
+    pointer-events: auto;
+    filter: grayscale(0);
+}
+
+.activity__card:hover{
+    box-shadow: rgba(72, 84, 101, 0.15) 0px 6px 14px 0px;
+    border-color: rgb(33, 188, 182);
+}
+
+.activity__card__top{
+    display: flex;
+    min-height: 140px;
+    max-height: 140px;
+    align-self: stretch;
+    border-bottom: 1px solid rgb(236, 237, 239);
+    border-radius: 8px 8px 0px 0px;
+    background-color: transparent;
+    padding: 0px;
+    background-image: url(https://ccl-e2e-content.nprd.alefed.com/data/ccl/mlo/thumbnails/41/ee/d7/28638/Stingrays_Cypress_Activity_thumb.jpeg?timestamp=2023-08-04T08:16:53.019);
+    background-position: center center;
+    background-size: cover;
+    font-size: 20px;
+}
+
+.activity__card__bottom{
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 8px;
+    align-items: flex-start;
+    gap: 16px;
+    align-self: stretch;
+    height: 100%;
+}

@@ -1,14 +1,16 @@
 import * as contentful from "../../utils/contentful"
 import {Accordion} from '@contentful/f36-components';
-import {Box, Image} from '@chakra-ui/react'
+import {Box, Flex, Image, VStack} from '@chakra-ui/react'
 import {useState} from "react";
+import styles from '../../styles/Course.module.css'
+import Badge from "./components/badge";
+import ActivityCard from "./components/activityCard";
 
-
-export default function CoursePage({gradeGroup,courseName}) {
+export default function CoursePage({gradeGroup, courseName}) {
 
     const setOfLevel = new Set();
 
-    Object.values(gradeGroup).flat().flat().map((it)=>{
+    Object.values(gradeGroup).flat().flat().map((it) => {
         setOfLevel.add(it.levelTitle)
     })
 
@@ -24,62 +26,82 @@ export default function CoursePage({gradeGroup,courseName}) {
 
     return (
         <>
-            <div >
-                <div style={{ marginLeft: '10px', display: 'inline-block' }}>
+            <div>
+                <div style={{marginLeft: '10px', display: 'inline-block'}}>
                     <h2>{courseName}</h2>
                 </div>
-                <div style={{ marginLeft: '5px', display: 'inline-block' }}>({setOfLevel.size})</div>
+                <div style={{marginLeft: '5px', display: 'inline-block'}}>({setOfLevel.size})</div>
             </div>
-            <Box marginTop={60}><Accordion align={"start"}>
-                {Object.entries(gradeGroup).map(([key, value], index) => (
-                    <Accordion.Item key={key}
-                                    isExpanded={accordionState[index] == null ? false : accordionState[index]}
-                                    onExpand={handleExpand(index)}
-                                    onCollapse={handleCollapse(index)}
-                                    title={
-                                        <Box marginTop={30}>
-                                            <div style={{
-                                                display: 'inline',
-                                                fontSize: '1.3em',
-                                                marginRight: '10px'
-                                            }}>{key}</div>
-                                            <div style={{
-                                                display: 'inline',
-                                                fontSize: '0.8em'
-                                            }}>{value.length} Levels
-                                            </div>
+            {/*<Box pb="6px">*/}
+            {/*    <Flex gap={2}>*/}
+            {/*        <h2 className={styles.headerTitle}>*/}
+            {/*            {courseName}*/}
+            {/*        </h2>*/}
+            {/*        <p>*/}
+            {/*            ({setOfLevel.size})*/}
+            {/*        </p>*/}
+            {/*    </Flex>*/}
+            {/*</Box>*/}
+            <VStack marginTop={30} gap="8px" w="100%">
+                <Accordion align={"start"} className={styles.accordion}>
+                    {Object.entries(gradeGroup).map(([key, value], index) => (
+                        <Accordion.Item key={key}
+                                        isExpanded={accordionState[index] == null ? false : accordionState[index]}
+                                        onExpand={handleExpand(index)}
+                                        onCollapse={handleCollapse(index)}
+                                        className={styles.accordion__item}
+                                        border="none"
+                                        title={
+                                            <Box>
+                                                <div style={{
+                                                    display: 'inline',
+                                                    fontSize: '1.3em',
+                                                    marginRight: '10px'
+                                                }}>{key}</div>
+                                                <div style={{
+                                                    display: 'inline',
+                                                    fontSize: '0.8em'
+                                                }}>{value.length} Levels
+                                                </div>
+                                                <div><Badge/></div>
+                                            </Box>
+                                        }>
+                            <div key={key}>
+                                <Box marginTop={10}>
+                                    <Accordion align={"start"} className={styles.accordion__item}>
+                                        <Box className={styles.level__container}>
+                                            <Box w="80px" p="19px 16px 16px" background="rgb(229, 247, 253)">
+                                                <Flex h={18}>
+                                                    <Image
+                                                        src={'../AlgebraAndAlgebricThinking.svg'}
+                                                        alt={'Image Not Found'}/>
+                                                    <h4>1</h4>
+                                                </Flex>
+                                            </Box>
+                                            <Box w="100%" styles={styles.level__row}>
+                                                {value.map((activitiesData) => (
+                                                        <Accordion.Item key={activitiesData}
+                                                                        title={<Flex gap={8} alignItems="center">
+                                                                            <h3>{activitiesData[0].levelTitle}</h3>
+                                                                        </Flex>}>
+                                                            {activitiesData.map((data) => (
+                                                                <Box display="inline-block" key={data}>
+                                                                    <ActivityCard data={data}/>
+                                                                </Box>
+                                                            ))
+                                                            }
+                                                        </Accordion.Item>
+                                                    )
+                                                )}
+                                            </Box>
                                         </Box>
-                                    }>
-                        <div key={key}>
-                            <Box marginTop={10}>
-                                <Accordion align={"start"}>
-                                    {value.map((activitiesData) => (
-                                            <Accordion.Item key={activitiesData} title={activitiesData[0].levelTitle}>
-                                                {activitiesData.map((data) => (
-                                                    <Box display={'inline-block'} key={data} maxW='sm' borderWidth='1px'
-                                                         borderRadius='lg' overflow='hidden' margin='0 20px' _hover={{
-                                                        border: "1px solid blue", // Border style on hover
-                                                    }}
-                                                    >
-                                                        <Image
-                                                            src={data.imageURL}
-                                                            alt={'Image Not Found'}/>
-                                                        <Box mt='1' fontWeight='semibold' as='h4' lineHeight='tight'
-                                                        >
-                                                            {data.activityTitle}
-                                                        </Box>
-                                                    </Box>
-                                                ))
-                                                }
-                                            </Accordion.Item>
-                                        )
-                                    )}
-                                </Accordion>
-                            </Box>
-                        </div>
-                    </Accordion.Item>
-                ))}
-            </Accordion></Box>
+                                    </Accordion>
+                                </Box>
+                            </div>
+                        </Accordion.Item>
+                    ))}
+                </Accordion>
+            </VStack>
         </>
     )
 }
@@ -114,9 +136,9 @@ export async function getServerSideProps(context) {
             "fields.code": code,
         })
     const levels = course.items[0].fields.levels;
-
+    console.log('levels', levels)
     //Group by grade levels
-    let gradeGroup = await levels.reduce(async (groupPromise, level) => {
+    let gradeGroup = await levels?.reduce(async (groupPromise, level) => {
         const group = await groupPromise;
         let gradeLevels = level.fields.gradeLevel;
 
@@ -133,7 +155,7 @@ export async function getServerSideProps(context) {
         {
             props: {
                 gradeGroup,
-                courseName:course.items[0].fields.name
+                courseName: course.items[0].fields.name
             }
         }
     )
