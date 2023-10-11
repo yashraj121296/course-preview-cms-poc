@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+[data-test-id="cf-ui-accordion-panel"] > div {
+  padding: 0;
+}

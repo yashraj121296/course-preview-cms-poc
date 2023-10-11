@@ -28,21 +28,16 @@ export default function CoursePage({gradeGroup, courseName}) {
         <>
             <div>
                 <div style={{marginLeft: '10px', display: 'inline-block'}}>
-                    <h2>{courseName}</h2>
+                    <h2 style={{
+                        fontWeight: 700,
+                        fontFamily: 'Signika, sans-serif',
+                        fontSize: '24px',
+                        lineHeight: '30px',
+                    }}>{courseName}</h2>
                 </div>
                 <div style={{marginLeft: '5px', display: 'inline-block'}}>({setOfLevel.size})</div>
             </div>
-            {/*<Box pb="6px">*/}
-            {/*    <Flex gap={2}>*/}
-            {/*        <h2 className={styles.headerTitle}>*/}
-            {/*            {courseName}*/}
-            {/*        </h2>*/}
-            {/*        <p>*/}
-            {/*            ({setOfLevel.size})*/}
-            {/*        </p>*/}
-            {/*    </Flex>*/}
-            {/*</Box>*/}
-            <VStack marginTop={30} gap="8px" w="100%">
+            <VStack gap="8px" w="100%">
                 <Accordion align={"start"} className={styles.accordion}>
                     {Object.entries(gradeGroup).map(([key, value], index) => (
                         <Accordion.Item key={key}
@@ -52,49 +47,75 @@ export default function CoursePage({gradeGroup, courseName}) {
                                         className={styles.accordion__item}
                                         border="none"
                                         title={
-                                            <Box>
-                                                <div style={{
-                                                    display: 'inline',
-                                                    fontSize: '1.3em',
-                                                    marginRight: '10px'
-                                                }}>{key}</div>
-                                                <div style={{
-                                                    display: 'inline',
-                                                    fontSize: '0.8em'
-                                                }}>{value.length} Levels
+                                            <Flex justify="space-between" w="100%" align="center">
+                                                <div>
+                                                    <div style={{
+                                                        display: 'inline',
+                                                        fontWeight: 700,
+                                                        fontFamily: 'Signika',
+                                                        fontSize: '16px',
+                                                        lineHeight: '20px',
+                                                        marginRight: '10px'
+                                                    }}>{key}</div>
+                                                    <div style={{
+                                                        display: 'inline',
+                                                        fontWeight: 300,
+                                                        fontFamily: 'Signika',
+                                                        fontSize: '16px',
+                                                        lineHeight: '20px',
+                                                    }}>{value.length} Levels
+                                                    </div>
                                                 </div>
-                                                <div><Badge/></div>
-                                            </Box>
+                                            </Flex>
                                         }>
                             <div key={key}>
                                 <Box marginTop={10}>
                                     <Accordion align={"start"} className={styles.accordion__item}>
-                                        <Box className={styles.level__container}>
-                                            <Box w="80px" p="19px 16px 16px" background="rgb(229, 247, 253)">
-                                                <Flex h={18}>
-                                                    <Image
-                                                        src={'../AlgebraAndAlgebricThinking.svg'}
-                                                        alt={'Image Not Found'}/>
-                                                    <h4>1</h4>
-                                                </Flex>
-                                            </Box>
-                                            <Box w="100%" styles={styles.level__row}>
-                                                {value.map((activitiesData) => (
-                                                        <Accordion.Item key={activitiesData}
-                                                                        title={<Flex gap={8} alignItems="center">
-                                                                            <h3>{activitiesData[0].levelTitle}</h3>
+
+                                        <Box w="100%">
+                                            {value.map((activitiesData, order) => (
+                                                    <Accordion.Item key={activitiesData}
+                                                                    className={styles.accordion__header}
+                                                                    title={
+                                                                        <Flex gap={8} alignItems="center">
+                                                                            <Box minWidth="80px" p="19px 16px 16px"
+                                                                                 color={getTypeData('Numbers and Operations').color}
+                                                                                 background={getTypeData('Numbers and Operations').background}>
+                                                                                <Flex h={18}>
+                                                                                    {getTypeData('Numbers and Operations').image && (
+                                                                                        <Image
+                                                                                            src={getTypeData('Numbers and Operations').image}
+                                                                                            alt={'Domain'}/>
+                                                                                    )}
+                                                                                    <h4>{order + 1}</h4>
+                                                                                </Flex>
+                                                                            </Box>
+                                                                            <h3 style={{
+                                                                                fontWeight: 700,
+                                                                                fontFamily: 'Signika',
+                                                                                fontSize: '16px',
+                                                                                lineHeight: '20px',
+                                                                                margin: 0
+                                                                            }}>{activitiesData[0].levelTitle}</h3>
                                                                         </Flex>}>
-                                                            {activitiesData.map((data) => (
-                                                                <Box display="inline-block" key={data}>
-                                                                    <ActivityCard data={data}/>
-                                                                </Box>
-                                                            ))
-                                                            }
-                                                        </Accordion.Item>
-                                                    )
-                                                )}
-                                            </Box>
+                                                        <Flex w="100%">
+                                                            <Box minWidth="80px" p="19px 16px 16px"
+                                                                 background={getTypeData('Numbers and Operations').background}>
+                                                            </Box>
+                                                            <Box className={styles.container}>
+                                                                {activitiesData.map((data) => (
+                                                                    <Box display="inline-block" key={data}>
+                                                                        <ActivityCard data={data}/>
+                                                                    </Box>
+                                                                ))
+                                                                }
+                                                            </Box>
+                                                        </Flex>
+                                                    </Accordion.Item>
+                                                )
+                                            )}
                                         </Box>
+
                                     </Accordion>
                                 </Box>
                             </div>
@@ -125,7 +146,6 @@ async function getActivityDataFromLevel(level) {
     })
 }
 
-
 export async function getServerSideProps(context) {
 
     let code = context.params;
@@ -136,7 +156,7 @@ export async function getServerSideProps(context) {
             "fields.code": code,
         })
     const levels = course.items[0].fields.levels;
-    console.log('levels', levels)
+
     //Group by grade levels
     let gradeGroup = await levels?.reduce(async (groupPromise, level) => {
         const group = await groupPromise;
@@ -160,3 +180,43 @@ export async function getServerSideProps(context) {
         }
     )
 }
+
+export const getTypeData = (type) => {
+    let typeData = {
+        background: '',
+        image: '',
+        color: '',
+    };
+
+    switch (type) {
+        case 'Algebra and Algebraic Thinking':
+            typeData = {
+                background: 'rgb(229, 248, 240)',
+                image: '../AlgebraAndAlgebricThinking.svg',
+                color: 'rgb(0, 74, 42)',
+            };
+            break;
+        case 'Geometry':
+            typeData = {
+                background: 'rgb(229, 247, 253)',
+                image: '../Geometry.svg',
+                color: 'rgb(0, 73, 94)',
+            };
+            break;
+        case 'Numbers and Operations':
+            typeData = {
+                background: 'rgb(255, 238, 229)',
+                image: '../NumbersAndOperations.svg',
+                color: 'rgb(102, 34, 0)',
+            };
+            break;
+        default:
+            typeData = {
+                background: '#fff',
+                image: '',
+                color: '#fff',
+            };
+    }
+
+    return typeData;
+};
