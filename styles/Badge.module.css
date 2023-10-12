@@ -1,0 +1,33 @@
+.badge{
+    justify-content: center;
+    gap: 8px;
+    height: 24px;
+    background-color: rgb(236, 237, 239);
+    color: rgb(72, 84, 101);
+    padding: 2px 8px;
+    border-radius: 50vh;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.badgeContainer{
+    justify-content: center;
+    gap: 8px;
+    height: 24px;
+    background-color: rgb(236, 237, 239);
+    color: rgb(72, 84, 101);
+    padding: 2px 8px;
+    border-radius: 50vh;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.badgeText{
+    color: inherit;
+    display: inline;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+}
