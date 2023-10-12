@@ -8,7 +8,6 @@ import ActivityCard from "./components/activityCard";
 
 export default function CoursePage({gradeGroup, courseName}) {
 
-    const domainType = "Geometry"
     const setOfLevel = new Set();
 
     Object.values(gradeGroup).flat().flat().map((it) => {
@@ -24,7 +23,7 @@ export default function CoursePage({gradeGroup, courseName}) {
     const handleCollapse = (itemIndex) => () => {
         setAccordionState((state) => ({...state, [itemIndex]: false}));
     };
-
+    console.log('gradeGroup', gradeGroup)
     return (
         <>
             <div>
@@ -74,51 +73,63 @@ export default function CoursePage({gradeGroup, courseName}) {
                                     <Accordion align={"start"} className={styles.accordion__item}>
 
                                         <Box w="100%">
-                                            {value.map((activitiesData, order) => (
-                                                    <Accordion.Item key={activitiesData}
-                                                                    className={styles.accordion__header}
-                                                                    title={
-                                                                        <Flex gap={getDomainData(domainType).image ? 8 : 0} alignItems="center">
-                                                                            <Box minWidth={getDomainData(domainType).image ? '80px' : '1px'} p="19px 16px 16px"
-                                                                                 color={getDomainData(domainType).color}
-                                                                                 background={getDomainData(domainType).background}>
-                                                                                <Flex h={18}>
-                                                                                    {getDomainData(domainType).image && (
-                                                                                        <>
-                                                                                            <Image
-                                                                                                src={getDomainData(domainType).image}
-                                                                                                alt={'Domain'}/>
-                                                                                            <h4>{order + 1}</h4>
+                                            {value.map((activitiesData, order) => {
+                                                    const domain = activitiesData[0].domainTagging[0].toString()
+                                                    return (
+                                                        <Accordion.Item key={activitiesData}
+                                                                        className={styles.accordion__header}
+                                                                        title={
+                                                                            <Flex gap={getDomainData(domain).image ? 8 : 0}
+                                                                                  alignItems="center">
+                                                                                <Box
+                                                                                    minWidth={
+                                                                                        getDomainData(domain).image
+                                                                                            ? '80px'
+                                                                                            : '1px'
+                                                                                    }
+                                                                                    p="19px 16px 16px"
+                                                                                    color={getDomainData(domain).color}
+                                                                                    background={getDomainData(domain).background}
+                                                                                >
+                                                                                    <Flex h={18}>
+                                                                                        {getDomainData(domain).image && (
+                                                                                            <>
+                                                                                                <Image
+                                                                                                    src={getDomainData(domain).image}
+                                                                                                    alt={'Domain'}
+                                                                                                />
+                                                                                                <h4>{order + 1}</h4>
+                                                                                            </>
+                                                                                        )}
+                                                                                    </Flex>
+                                                                                </Box>
 
-                                                                                        </>
-                                                                                    )}
-                                                                                </Flex>
-                                                                            </Box>
-                                                                            <h3 style={{
-                                                                                fontWeight: 700,
-                                                                                fontFamily: 'Signika',
-                                                                                fontSize: '16px',
-                                                                                lineHeight: '20px',
-                                                                                margin: 0
-                                                                            }}>{activitiesData[0].levelTitle}</h3>
-                                                                        </Flex>}>
-                                                        <Flex w="100%">
-                                                            {getDomainData(domainType).image && (
-                                                                <Box minWidth="80px" p="19px 16px 16px"
-                                                                     background={getDomainData(domainType).background}>
-                                                                </Box>
-                                                            )}
-                                                            <Box className={styles.container}>
-                                                                {activitiesData.map((data) => (
-                                                                    <Box display="inline-block" key={data}>
-                                                                        <ActivityCard data={data}/>
+                                                                                <h3 style={{
+                                                                                    fontWeight: 700,
+                                                                                    fontFamily: 'Signika',
+                                                                                    fontSize: '16px',
+                                                                                    lineHeight: '20px',
+                                                                                    margin: 0
+                                                                                }}>{activitiesData[0].levelTitle}</h3>
+                                                                            </Flex>}>
+                                                            <Flex w="100%">
+                                                                {getDomainData(activitiesData.domainTagging && getDomainData(activitiesData.domainTagging[0])).image && (
+                                                                    <Box minWidth="80px" p="19px 16px 16px"
+                                                                         background={activitiesData.domainTagging && getDomainData(activitiesData.domainTagging[0]).background}>
                                                                     </Box>
-                                                                ))
-                                                                }
-                                                            </Box>
-                                                        </Flex>
-                                                    </Accordion.Item>
-                                                )
+                                                                )}
+                                                                <Box className={styles.container}>
+                                                                    {activitiesData.map((data) => (
+                                                                        <Box display="inline-block" key={data}>
+                                                                            <ActivityCard data={data}/>
+                                                                        </Box>
+                                                                    ))
+                                                                    }
+                                                                </Box>
+                                                            </Flex>
+                                                        </Accordion.Item>
+                                                    )
+                                                }
                                             )}
                                         </Box>
 
@@ -147,7 +158,8 @@ async function getActivityDataFromLevel(level) {
         return {
             levelTitle: level.fields.title,
             imageURL: it.fields.image.fields.file.url,
-            activityTitle: it.fields.title
+            activityTitle: it.fields.title,
+            domainTagging: level.fields.domainTagging
         }
     })
 }
@@ -193,7 +205,6 @@ export const getDomainData = (type) => {
         image: '',
         color: '',
     };
-
     switch (type) {
         case 'Algebra and Algebraic Thinking':
             typeData = {
