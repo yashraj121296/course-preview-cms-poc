@@ -205,7 +205,7 @@ export const getDomainData = (type) => {
         color: '',
     };
     switch (type) {
-        case 'Algebra and Algebraic Thinking':
+        case 'Algebra and Algebriac thinking':
             typeData = {
                 background: 'rgb(229, 248, 240)',
                 image: '../AlgebraAndAlgebricThinking.svg',
