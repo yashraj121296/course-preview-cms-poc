@@ -23,7 +23,6 @@ export default function CoursePage({gradeGroup, courseName}) {
     const handleCollapse = (itemIndex) => () => {
         setAccordionState((state) => ({...state, [itemIndex]: false}));
     };
-    console.log('gradeGroup', gradeGroup)
     return (
         <>
             <div>
