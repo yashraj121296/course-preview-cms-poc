@@ -5,14 +5,12 @@ import {Image} from "@chakra-ui/react";
 export default function ActivityCard({data}) {
     return (
         <div data-testid="activity-card-container" className={styles.activity__card}>
-            <div data-testid="activity-card-thumbnail" className={styles.activity__card__top}>
-                {data && (
-                    <Image
-                        src={data.imageURL}
-                        alt={'activity card'}/>
-                )}
+            {data && (
+                <div data-testid="activity-card-thumbnail" className={styles.activity__card__top}
+                     style={{backgroundImage: `url(${data.imageURL})`}}>
+                </div>
+            )}
 
-            </div>
             <div className={styles.activity__card__bottom}>
                 <div data-testid="activity-title">Stingrays_Cypress_Activity_1</div>
                 <div>
