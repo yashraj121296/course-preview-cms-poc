@@ -78,17 +78,20 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                     <Accordion.Item key={activitiesData}
                                                                     className={styles.accordion__header}
                                                                     title={
-                                                                        <Flex gap={8} alignItems="center">
-                                                                            <Box minWidth="80px" p="19px 16px 16px"
+                                                                        <Flex gap={getDomainData(domainType).image ? 8 : 0} alignItems="center">
+                                                                            <Box minWidth={getDomainData(domainType).image ? '80px' : '1px'} p="19px 16px 16px"
                                                                                  color={getDomainData(domainType).color}
                                                                                  background={getDomainData(domainType).background}>
                                                                                 <Flex h={18}>
                                                                                     {getDomainData(domainType).image && (
-                                                                                        <Image
-                                                                                            src={getDomainData(domainType).image}
-                                                                                            alt={'Domain'}/>
+                                                                                        <>
+                                                                                            <Image
+                                                                                                src={getDomainData(domainType).image}
+                                                                                                alt={'Domain'}/>
+                                                                                            <h4>{order + 1}</h4>
+
+                                                                                        </>
                                                                                     )}
-                                                                                    <h4>{order + 1}</h4>
                                                                                 </Flex>
                                                                             </Box>
                                                                             <h3 style={{
@@ -100,9 +103,11 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                             }}>{activitiesData[0].levelTitle}</h3>
                                                                         </Flex>}>
                                                         <Flex w="100%">
-                                                            <Box minWidth="80px" p="19px 16px 16px"
-                                                                 background={getDomainData(domainType).background}>
-                                                            </Box>
+                                                            {getDomainData(domainType).image && (
+                                                                <Box minWidth="80px" p="19px 16px 16px"
+                                                                     background={getDomainData(domainType).background}>
+                                                                </Box>
+                                                            )}
                                                             <Box className={styles.container}>
                                                                 {activitiesData.map((data) => (
                                                                     <Box display="inline-block" key={data}>
