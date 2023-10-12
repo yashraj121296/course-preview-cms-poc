@@ -113,9 +113,9 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                                 }}>{activitiesData[0].levelTitle}</h3>
                                                                             </Flex>}>
                                                             <Flex w="100%">
-                                                                {getDomainData(activitiesData.domainTagging && getDomainData(activitiesData.domainTagging[0])).image && (
+                                                                {getDomainData(domain).image && (
                                                                     <Box minWidth="80px" p="19px 16px 16px"
-                                                                         background={activitiesData.domainTagging && getDomainData(activitiesData.domainTagging[0]).background}>
+                                                                         background={getDomainData(domain).background}>
                                                                     </Box>
                                                                 )}
                                                                 <Box className={styles.container}>
