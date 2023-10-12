@@ -79,7 +79,7 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                         className={styles.accordion__header}
                                                                         title={
                                                                             <Flex gap={getDomainData(domain).image ? 8 : 0}
-                                                                                  alignItems="center">
+                                                                                  alignItems="center" w="100%">
                                                                                 <Box
                                                                                     minWidth={
                                                                                         getDomainData(domain).image
@@ -103,14 +103,18 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                                     </Flex>
                                                                                 </Box>
 
-                                                                                <h3 style={{
-                                                                                    fontWeight: 700,
-                                                                                    fontFamily: 'Signika',
-                                                                                    fontSize: '16px',
-                                                                                    lineHeight: '20px',
-                                                                                    margin: 0
-                                                                                }}>{activitiesData[0].levelTitle}</h3>
+                                                                                <Flex w="100%" alignItems="center" justifyContent="space-between">
+                                                                                    <h3 style={{
+                                                                                        fontWeight: 700,
+                                                                                        fontFamily: 'Signika',
+                                                                                        fontSize: '16px',
+                                                                                        lineHeight: '20px',
+                                                                                        margin: 0
+                                                                                    }}>{activitiesData[0].levelTitle}</h3>
+                                                                                    <Badge text={`${activitiesData.length} ${activitiesData.length === 1 ? 'activity' : 'activities'}`} />
+                                                                                </Flex>
                                                                             </Flex>}>
+
                                                             <Flex w="100%">
                                                                 {getDomainData(domain).image && (
                                                                     <Box minWidth="80px" p="19px 16px 16px"
