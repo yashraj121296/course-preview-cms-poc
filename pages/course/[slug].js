@@ -8,6 +8,7 @@ import ActivityCard from "./components/activityCard";
 
 export default function CoursePage({gradeGroup, courseName}) {
 
+    const domainType = "Geometry"
     const setOfLevel = new Set();
 
     Object.values(gradeGroup).flat().flat().map((it) => {
@@ -79,12 +80,12 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                     title={
                                                                         <Flex gap={8} alignItems="center">
                                                                             <Box minWidth="80px" p="19px 16px 16px"
-                                                                                 color={getTypeData('Numbers and Operations').color}
-                                                                                 background={getTypeData('Numbers and Operations').background}>
+                                                                                 color={getDomainData(domainType).color}
+                                                                                 background={getDomainData(domainType).background}>
                                                                                 <Flex h={18}>
-                                                                                    {getTypeData('Numbers and Operations').image && (
+                                                                                    {getDomainData(domainType).image && (
                                                                                         <Image
-                                                                                            src={getTypeData('Numbers and Operations').image}
+                                                                                            src={getDomainData(domainType).image}
                                                                                             alt={'Domain'}/>
                                                                                     )}
                                                                                     <h4>{order + 1}</h4>
@@ -100,7 +101,7 @@ export default function CoursePage({gradeGroup, courseName}) {
                                                                         </Flex>}>
                                                         <Flex w="100%">
                                                             <Box minWidth="80px" p="19px 16px 16px"
-                                                                 background={getTypeData('Numbers and Operations').background}>
+                                                                 background={getDomainData(domainType).background}>
                                                             </Box>
                                                             <Box className={styles.container}>
                                                                 {activitiesData.map((data) => (
@@ -181,7 +182,7 @@ export async function getServerSideProps(context) {
     )
 }
 
-export const getTypeData = (type) => {
+export const getDomainData = (type) => {
     let typeData = {
         background: '',
         image: '',
