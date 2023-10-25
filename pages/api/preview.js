@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     if (!code) {
         return res.status(401).json({ message: 'Invalid token' })
     }
-    const course = await contentful.client
+    const course = await contentful.previewClient
         .getEntries({
             content_type: 'course',
             limit: 1,
